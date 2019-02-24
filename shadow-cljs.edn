@@ -2,5 +2,5 @@
  :dependencies [[expound "0.7.2"]]
  :builds       {:app   {:target     :browser
                         :output-dir "public/js"
-                        :modules    {}}
-                :tests {}}}
+                        :modules    {:main {:init-fn conway.app/init}}}
+                :tests {:target :karma}}}
