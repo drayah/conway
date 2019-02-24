@@ -1,4 +1,4 @@
 (ns conway.app)
 
 (defn init []
-  (println "Init app!"))
+  (js/console.log "hi conway"))
