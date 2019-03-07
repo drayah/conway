@@ -8,10 +8,10 @@
            0 0 0
            0 0 0])
 
-(def game-world (game/create-game-world))
+(def world (game/empty-world))
 
 (defn init []
-  (let [initial-world (p-world/initialize! game-world size seed)]
+  (let [initial-world (p-world/initialize! world size seed)]
     (js/console.log "Initialized world of size " (:size initial-world))
     (doseq [cell (:iteration initial-world)]
       (js/console.log cell))))

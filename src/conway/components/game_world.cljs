@@ -24,5 +24,5 @@
 
   (current [_]))
 
-(defn create-game-world []
+(defn empty-world []
   (->GameWorld (atom {})))
