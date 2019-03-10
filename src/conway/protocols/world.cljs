@@ -3,4 +3,5 @@
 (defprotocol IWorld
   (initialize! [this size seed])
   (tick! [this])
-  (current [this]))
+  (size [this])
+  (generation [this]))

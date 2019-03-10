@@ -6,8 +6,8 @@
   [{:keys [size seed] :as params}
    state]
   (and (valid? seed? params)
-       (swap! state (constantly {:size      size
-                                 :iteration seed}))))
+       (swap! state (constantly {:size       size
+                                 :generation seed}))))
 
 (defrecord GameWorld [state]
   p-world/IWorld
@@ -22,7 +22,9 @@
 
   (tick! [_])
 
-  (current [_]))
+  (size [_] (:size @state))
+
+  (generation [_] (:generation @state)))
 
 (defn empty-world []
   (->GameWorld (atom {})))
