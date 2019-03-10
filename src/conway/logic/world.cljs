@@ -1,8 +1,11 @@
 (ns conway.logic.world)
 
-(defn- only-numbers? [seed]
+(def possible-cell-values (-> (range 2)
+                              set))
+
+(defn- ones-and-zeros? [seed]
   (->> seed
-       (remove #(number? %))
+       (remove #(possible-cell-values %))
        empty?))
 
 (defn- valid-size? [size seed]
@@ -11,4 +14,4 @@
 
 (defn valid-seed? [{:keys [size seed]}]
   (and (valid-size? size seed)
-       (only-numbers? seed)))
+       (ones-and-zeros? seed)))

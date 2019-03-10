@@ -2,7 +2,9 @@
  :dependencies [[expound "0.7.2"]
                 [cider/cider-nrepl "0.21.1"]]
  :dev-http     {8000 "public"}
- :builds       {:app   {:target     :browser
-                        :output-dir "public/js"
-                        :modules    {:main {:init-fn conway.app/init}}}
-                :tests {:target :karma}}}
+ :builds       {:app  {:target     :browser
+                       :output-dir "public/js"
+                       :modules    {:main {:init-fn conway.app/init}}}
+                :test {:target    :node-test
+                       :output-to "out/node-tests.js"
+                       :autorun   true}}}

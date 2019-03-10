@@ -20,7 +20,7 @@
                   "World initialization failed!"
                   {:error (explain seed? params)})))))
 
-  (tick! [_])
+  (tick! [_]) ;calculate new generation
 
   (size [_] (:size @state))
 

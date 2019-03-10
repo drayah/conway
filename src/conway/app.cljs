@@ -11,6 +11,6 @@
     (doseq [cell (p-world/generation world)]
       (js/console.log cell))))
 
-;(forever --> while true
+;(game-loop -> while true
 ; (render (generation world))
 ; (tick world)
