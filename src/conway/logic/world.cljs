@@ -1,7 +1,6 @@
 (ns conway.logic.world)
 
-(def possible-cell-values (-> (range 2)
-                              set))
+(def possible-cell-values #{0 1})
 
 (defn- ones-and-zeros? [seed]
   (->> seed

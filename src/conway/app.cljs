@@ -1,7 +1,8 @@
 (ns conway.app
   (:require [conway.protocols.world :as p-world]
             [conway.components.game-world :as game]
-            [conway.game.seeds :as seeds]))
+            [conway.game.seeds :as seeds])
+  (:require-macros [conway.game.utils :refer [game-loop]]))
 
 (defn init []
   (let [{:keys [size seed]} seeds/simple-configuration
