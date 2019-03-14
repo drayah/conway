@@ -1,6 +1,7 @@
 {:source-paths ["src" "test"]
  :dependencies [[expound "0.7.2"]
-                [cider/cider-nrepl "0.21.1"]]
+                [cider/cider-nrepl "0.21.1"]
+                [org.clojure/core.async "0.4.490"]]
  :dev-http     {8000 "public"}
  :builds       {:app  {:target     :browser
                        :output-dir "public/js"
