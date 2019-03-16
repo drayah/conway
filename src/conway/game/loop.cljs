@@ -8,8 +8,9 @@
 (defn forever! [world surface]
   (go-loop [counter 1]
     (<! (timeout wait-ms))
-    (->> (p-world/size world)
-         (str "LOOP-" counter": world size = ")
+    (->> (p-world/generation world)
+         clj->js
+         (str "LOOP-" counter": generation = ")
          js/console.log)
     (recur (inc counter))))
 
