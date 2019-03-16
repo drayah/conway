@@ -6,13 +6,14 @@
 (def wait-ms 1000)
 
 (defn forever! [world surface]
-  (go-loop [counter 1]
+  (js/console.log surface)
+  (go-loop [frame 1]
     (<! (timeout wait-ms))
     (->> (p-world/generation world)
          clj->js
-         (str "LOOP-" counter": generation = ")
+         (str "LOOP-" frame ": ")
          js/console.log)
-    (recur (inc counter))))
+    (recur (inc frame))))
 
 ;(game-loop -> while true
 ; (render (generation world))
