@@ -14,13 +14,10 @@ body {
   align-items: center;
 
   canvas {
-    $size: 500px;
     $color: rgb(50, 200, 220);
 
     background-color: $color;
     border: 1px solid darken($color, 10%);
     border-radius: 5px;
-    width: $size;
-    height: $size;
   }
 }
