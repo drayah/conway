@@ -14,8 +14,7 @@ body {
   align-items: center;
 }
 body canvas {
-  background-color: #32c8dc;
-  border: 1px solid #20a9bb;
+  background-color: #282828;
   border-radius: 5px;
 }
 

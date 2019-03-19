@@ -14,6 +14,7 @@
     (-> (str "LOOP-" frame)
         js/console.log)
     (g-surface/render! world render-context)
+    (p-world/tick! world)
     (recur (inc frame))))
 
 ;(game-loop -> while true
