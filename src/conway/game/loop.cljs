@@ -1,21 +1,19 @@
 (ns conway.game.loop
-  (:require [cljs.core.async :refer [<! timeout]]
-            [conway.protocols.world :as p-world]
-            [conway.game.surface :as g-surface])
-  (:require-macros [cljs.core.async :refer [go-loop]]))
+  (:require [conway.protocols.world :as p-world]
+            [conway.game.surface :as g-surface]))
 
-(def wait-ms 1000)
+(def components (atom {}))
+
+(defn- animate! [timestamp]
+  (let [{:keys [world render-context]} @components]
+    (js/window.requestAnimationFrame animate!)
+    (js/console.log (str "LOOP - " timestamp))
+    (g-surface/render! world render-context)
+    (p-world/tick! world)))
 
 (defn forever! [world render-context]
-  (js/console.log render-context)
-
-  (go-loop [frame 1]
-    (<! (timeout wait-ms))
-    (-> (str "LOOP-" frame)
-        js/console.log)
-    (g-surface/render! world render-context)
-    (p-world/tick! world)
-    (recur (inc frame))))
+  (swap! components assoc :world world :render-context render-context)
+  (animate! 0))
 
 ;(game-loop -> while true
 ; (render (generation world))
