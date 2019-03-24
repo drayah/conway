@@ -1,6 +1,6 @@
 # conway
 
-Game of Life in ClojureScript
+Experimental Game of Life in ClojureScript.
 
 ## License
 
