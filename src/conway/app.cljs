@@ -2,11 +2,11 @@
   (:require [conway.protocols.world :as p-world]
             [conway.components.game-world :as c-game-world]
             [conway.game.seeds :as seeds]
-            [conway.dom.document :as d]
+            [conway.js.common :as jsc :refer [log!]]
             [conway.game.loop :as g-loop]))
 
 (defn- render-context! [canvas-id context-type]
-  (-> (d/element-by-id! canvas-id)
+  (-> (jsc/element-by-id! canvas-id)
       (.getContext context-type)))
 
 (defn- run-game! []
@@ -14,8 +14,8 @@
         render-context      (render-context! "game-canvas" "2d")
         world               (c-game-world/empty-world)
         _                   (p-world/initialize! world size seed)]
-    (js/console.log "Initialized world of size " (p-world/size world))
+    (log! (str "Initialized world of size " (p-world/size world)))
     (g-loop/forever! world render-context)))
 
 (defn init! []
-  (js/window.addEventListener "DOMContentLoaded" (fn [event] (run-game!))))
+  (jsc/add-event-listener! jsc/window "DOMContentLoaded" (fn [event] (run-game!))))
