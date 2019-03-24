@@ -35,3 +35,11 @@
     [1 0 1 0]           2 (coords [1 0 0] [0 1 0] [1 0 1] [0 1 1])
     [1 1 1 1]           2 (coords [1 0 0] [1 1 0] [1 0 1] [1 1 1])
     [0 0 0 1 1 1 0 0 0] 3 (coords [0 0 0] [0 1 0] [0 2 0] [1 0 1] [1 1 1] [1 2 1] [0 0 2] [0 1 2] [0 2 2])))
+
+(deftest coordinates->generation-index
+  (are [coordinates size result] (= (l-world/coordinates->generation-index coordinates size) result)
+    {:x 0 :y 0} 2 0
+    {:x 1 :y 0} 2 1
+    {:x 0 :y 1} 2 2
+    {:x 1 :y 1} 2 3
+    {:x 1 :y 2} 5 11))

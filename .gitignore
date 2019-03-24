@@ -12,5 +12,5 @@ pom.xml.asc
 .hgignore
 .hg/
 .shadow-cljs/
-public/js/cljs-runtime
+public/js/
 out/

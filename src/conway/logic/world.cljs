@@ -18,7 +18,8 @@
 (defn- cell->coordinate [size index cell]
   {:cell cell
    :x    (mod index size)
-   :y    (Math/floor (/ index size))})
+   :y    (-> (/ index size)
+             Math/floor)})
 
 (defn generation->cell+coordinates
   "Transforms a given generation into a sequence
@@ -27,6 +28,16 @@
                                   :y    y-pos}"
   [size generation]
   (map-indexed (partial cell->coordinate size) generation))
+
+(defn coordinates->neighbor+coordinates [coordinates size generation])
+
+(defn coordinates->generation-index
+  "Return the 0-based generation index given (x, y) coordinate values and the row, column size
+  according to the following formula: index = y * size + x"
+  [coordinates size]
+  (let [{:keys [x y]} coordinates]
+    (-> (* y size)
+        (+ x))))
 
 (defn next-generation
   "The following rules are applied in order
