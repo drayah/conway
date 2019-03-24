@@ -1,6 +1,8 @@
 (ns conway.components.game-world
-  (:require [conway.protocols.world :as p-world]
-            [conway.validations.world :refer [valid? explain seed?]]))
+  (:require [com.stuartsierra.component :as component]
+            [conway.protocols.world :as p-world]
+            [conway.validations.world :refer [valid? explain seed?]]
+            [conway.js.common :refer [log!]]))
 
 (defn- initialize-game-world!
   [{:keys [size seed] :as params}
@@ -9,10 +11,10 @@
        (swap! state (constantly {:size       size
                                  :generation seed}))))
 
-(defrecord GameWorld [state]
+(defrecord GameWorld [size seed state]
   p-world/IWorld
 
-  (initialize! [_ size seed]
+  (initialize! [_]
     (let [params {:size size
                   :seed seed}]
       (or (initialize-game-world! params state)
@@ -24,7 +26,18 @@
 
   (size [_] (:size @state))
 
-  (generation [_] (:generation @state)))
+  (generation [_] (:generation @state))
 
-(defn empty-world []
-  (->GameWorld (atom {})))
+  component/Lifecycle
+
+  (start [this]
+    (log! "Initialize game world")
+    (p-world/initialize! this)
+    this)
+
+  (stop [this] this))
+
+(defn new-world [size seed]
+  (map->GameWorld {:size  size
+                   :seed  seed
+                   :state (atom {})}))

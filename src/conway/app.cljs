@@ -1,21 +1,24 @@
 (ns conway.app
-  (:require [conway.protocols.world :as p-world]
+  (:require [com.stuartsierra.component :as component]
+            [conway.protocols.world :as p-world]
             [conway.components.game-world :as c-game-world]
+            [conway.components.canvas :as c-canvas]
+            [conway.components.simulation :as c-simulation]
             [conway.game.seeds :as seeds]
-            [conway.js.common :as jsc :refer [log!]]
-            [conway.game.loop :as g-loop]))
+            [conway.js.common :as jsc :refer [log!]]))
 
-(defn- render-context! [canvas-id context-type]
-  (-> (jsc/element-by-id! canvas-id)
-      (.getContext context-type)))
+(def simple-config seeds/simple-configuration)
 
-(defn- run-game! []
-  (let [{:keys [size seed]} seeds/simple-configuration
-        render-context      (render-context! "game-canvas" "2d")
-        world               (c-game-world/empty-world)
-        _                   (p-world/initialize! world size seed)]
-    (log! (str "Initialized world of size " (p-world/size world)))
-    (g-loop/forever! world render-context)))
+(def system (component/system-map
+             :world (c-game-world/new-world (:size simple-config) (:seed simple-config))
+             :canvas (c-canvas/new-canvas "game-canvas" "2d")
+             :simulation (component/using
+                          (c-simulation/new-simulation)
+                          [:world :canvas])))
+
+(defn- start-system! []
+  (log! "Start system")
+  (component/start system))
 
 (defn init! []
-  (jsc/add-event-listener! jsc/window "DOMContentLoaded" (fn [event] (run-game!))))
+  (jsc/add-event-listener! jsc/window "DOMContentLoaded" (fn [event] (start-system!))))
