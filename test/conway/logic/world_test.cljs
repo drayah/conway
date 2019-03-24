@@ -19,3 +19,19 @@
     {:size 2 :seed [0 9 0 0]}           false
     {:size 2 :seed [1 2 3 4]}           false
     {:size 3 :seed [0 0 0 0 0 0 0 0 0]} true))
+
+(defn ->coordinate [[cell x y]]
+  {:cell cell
+   :x    x
+   :y    y})
+
+(defn coords [& params]
+  (map ->coordinate params))
+
+(deftest generation->cell+coordinates
+  (are [generation size result] (= (l-world/generation->cell+coordinates size generation) result)
+    [0 0 0 0]           2 (coords [0 0 0] [0 1 0] [0 0 1] [0 1 1])
+    [0 1 0 1]           2 (coords [0 0 0] [1 1 0] [0 0 1] [1 1 1])
+    [1 0 1 0]           2 (coords [1 0 0] [0 1 0] [1 0 1] [0 1 1])
+    [1 1 1 1]           2 (coords [1 0 0] [1 1 0] [1 0 1] [1 1 1])
+    [0 0 0 1 1 1 0 0 0] 3 (coords [0 0 0] [0 1 0] [0 2 0] [1 0 1] [1 1 1] [1 2 1] [0 0 2] [0 1 2] [0 2 2])))

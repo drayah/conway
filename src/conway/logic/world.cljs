@@ -14,3 +14,26 @@
 (defn valid-seed? [{:keys [size seed]}]
   (and (valid-size? size seed)
        (ones-and-zeros? seed)))
+
+(defn- cell->coordinate [size index cell]
+  {:cell cell
+   :x    (mod index size)
+   :y    (Math/floor (/ index size))})
+
+(defn generation->cell+coordinates
+  "Transforms a given generation into a sequence
+  of cells with coordinates like {:cell cell-value
+                                  :x    x-pos
+                                  :y    y-pos}"
+  [size generation]
+  (map-indexed (partial cell->coordinate size) generation))
+
+(defn next-generation
+  "The following rules are applied in order
+  to generate the next generation.
+
+  1. Any cell with fewer than two live neighbors dies.
+  2. Any cell with two or three live neighbors lives on.
+  3. Any cell with more than three live neighbors dies.
+  4. Any dead cell with exactly three live neighbors returns to life."
+  [size generation])
