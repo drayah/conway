@@ -29,15 +29,34 @@
   [size generation]
   (map-indexed (partial cell->coordinate size) generation))
 
-(defn coordinates->neighbor+coordinates [coordinates size generation])
+(defn no-invalid-coordinates
+  [size
+   {:keys [x y] :as coordinate}]
+  (let [min 0
+        max (- size 1)]
+    (cond-> coordinate
+      (< x min) (assoc :x max)
+      (> x max) (assoc :x min)
+      (< y min) (assoc :y max)
+      (> y max) (assoc :y min))))
+
+(defn coordinates->vertical-neighbors
+  [{:keys [x y]}
+   size]
+  (map (partial no-invalid-coordinates size)
+       [{:x x :y (- y 1)}
+        {:x x :y (+ y 1)}]))
+
+(defn coordinates->horizontal-neighbors [])
+(defn coordinates->diagonal-neighbors [])
 
 (defn coordinates->generation-index
   "Return the 0-based generation index given (x, y) coordinate values and the row, column size
   according to the following formula: index = y * size + x"
-  [coordinates size]
-  (let [{:keys [x y]} coordinates]
-    (-> (* y size)
-        (+ x))))
+  [{:keys [x y]}
+   size]
+  (-> (* y size)
+      (+ x)))
 
 (defn next-generation
   "The following rules are applied in order
