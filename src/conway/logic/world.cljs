@@ -29,7 +29,7 @@
   [size generation]
   (map-indexed (partial cell->coordinate size) generation))
 
-(defn no-invalid-coordinates
+(defn- no-invalid-coordinates
   [size
    {:keys [x y] :as coordinate}]
   (let [min 0
@@ -43,11 +43,15 @@
 (defn coordinates->vertical-neighbors
   [{:keys [x y]}
    size]
-  (map (partial no-invalid-coordinates size)
-       [{:x x :y (- y 1)}
-        {:x x :y (+ y 1)}]))
+  (map (partial no-invalid-coordinates size) [{:x x :y (dec y)}
+                                              {:x x :y (inc y)}]))
 
-(defn coordinates->horizontal-neighbors [])
+(defn coordinates->horizontal-neighbors
+  [{:keys [x y]}
+   size]
+  (map (partial no-invalid-coordinates size) [{:x (dec x) :y y}
+                                              {:x (inc x) :y y}]))
+
 (defn coordinates->diagonal-neighbors [])
 
 (defn coordinates->generation-index
