@@ -33,7 +33,7 @@
   [size
    {:keys [x y] :as coordinate}]
   (let [min 0
-        max (- size 1)]
+        max (dec size)]
     (cond-> coordinate
       (< x min) (assoc :x max)
       (> x max) (assoc :x min)
