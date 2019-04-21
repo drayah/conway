@@ -67,3 +67,8 @@
     {:x 0 :y 2} 3 [{:x 2 :y 2} {:x 1 :y 2}]
     {:x 1 :y 2} 3 [{:x 0 :y 2} {:x 2 :y 2}]
     {:x 2 :y 2} 3 [{:x 1 :y 2} {:x 0 :y 2}]))
+
+(deftest coordinates->diagonal-neighbors
+  (are [coordinates size result] (= (l-world/coordinates->diagonal-neighbors coordinates size) result)
+    {:x 0 :y 0} 3 [{:x 2 :y 2} {:x 2 :y 1} {:x 1 :y 2} {:x 1 :y 1}]
+    {:x 1 :y 1} 3 [{:x 0 :y 0} {:x 0 :y 2} {:x 2 :y 0} {:x 2 :y 2}]))

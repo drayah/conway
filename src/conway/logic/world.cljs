@@ -52,7 +52,13 @@
   (map (partial no-invalid-coordinates size) [{:x (dec x) :y y}
                                               {:x (inc x) :y y}]))
 
-(defn coordinates->diagonal-neighbors [])
+(defn coordinates->diagonal-neighbors
+  [{:keys [x y]}
+   size]
+  (map (partial no-invalid-coordinates size) [{:x (dec x) :y (dec y)}
+                                              {:x (dec x) :y (inc y)}
+                                              {:x (inc x) :y (dec y)}
+                                              {:x (inc x) :y (inc y)}]))
 
 (defn coordinates->generation-index
   "Return the 0-based generation index given (x, y) coordinate values and the row, column size
