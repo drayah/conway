@@ -60,6 +60,13 @@
                                               {:x (inc x) :y (dec y)}
                                               {:x (inc x) :y (inc y)}]))
 
+(defn coordinates->neighbors
+  [{:keys [x y] :as coordinate}
+   size]
+  (concat (coordinates->vertical-neighbors coordinate size)
+          (coordinates->horizontal-neighbors coordinate size)
+          (coordinates->diagonal-neighbors coordinate size)))
+
 (defn coordinates->generation-index
   "Return the 0-based generation index given (x, y) coordinate values and the row, column size
   according to the following formula: index = y * size + x"

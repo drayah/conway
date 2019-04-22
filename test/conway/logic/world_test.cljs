@@ -2,6 +2,8 @@
   (:require [conway.logic.world :as l-world]
             [cljs.test :refer-macros [deftest testing is are]]))
 
+(def neighbor-count 8)
+
 (deftest valid-seed?
   (are [params result] (= (l-world/valid-seed? params) result)
     {:size 0 :seed []}                  true
@@ -72,3 +74,29 @@
   (are [coordinates size result] (= (l-world/coordinates->diagonal-neighbors coordinates size) result)
     {:x 0 :y 0} 3 [{:x 2 :y 2} {:x 2 :y 1} {:x 1 :y 2} {:x 1 :y 1}]
     {:x 1 :y 1} 3 [{:x 0 :y 0} {:x 0 :y 2} {:x 2 :y 0} {:x 2 :y 2}]))
+
+(deftest coordinates->neighbors
+  (testing "returns correct neighbor count"
+    (is (= (-> (l-world/coordinates->neighbors {:x 0 :y 0} 3)
+               count)
+           neighbor-count)))
+
+  (testing "returns all coordinate neighbors"
+    (are [coordinates size result] (= (l-world/coordinates->neighbors coordinates size) result)
+      {:x 1 :y 1} 3 [{:x 1 :y 0}
+                     {:x 1 :y 2}
+                     {:x 0 :y 1}
+                     {:x 2 :y 1}
+                     {:x 0 :y 0}
+                     {:x 0 :y 2}
+                     {:x 2 :y 0}
+                     {:x 2 :y 2}]
+
+      {:x 0 :y 0} 3 [{:x 0 :y 2}
+                     {:x 0 :y 1}
+                     {:x 2 :y 0}
+                     {:x 1 :y 0}
+                     {:x 2 :y 2}
+                     {:x 2 :y 1}
+                     {:x 1 :y 2}
+                     {:x 1 :y 1}])))
