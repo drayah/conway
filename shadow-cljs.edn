@@ -1,5 +1,6 @@
 {:source-paths ["src" "test"]
  :dependencies [[expound "0.7.2"]
+                [nubank/matcher-combinators "0.9.0"]
                 [cider/cider-nrepl "0.21.1"]
                 [com.stuartsierra/component "0.4.0"]]
  :dev-http     {8000 "public"}
