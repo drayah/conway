@@ -75,6 +75,22 @@
   (-> (* y size)
       (+ x)))
 
+(defn- coordinates->cell+coordinates
+  [coordinates size generation]
+  (->> (coordinates->generation-index coordinates size)
+       (nth generation)
+       (assoc coordinates :cell)))
+
+(defn- cell+coordinates->cell+coordinates+neighbors
+  [cell+coordinates size generation]
+  (let [neighbors (coordinates->neighbors cell+coordinates size)]
+    (assoc cell+coordinates :neighbors (map #(coordinates->cell+coordinates % size generation) neighbors))))
+
+(defn generation->neighbors
+  [size generation]
+  (->> (generation->cell+coordinates size generation)
+       (map #(cell+coordinates->cell+coordinates+neighbors % size generation))))
+
 (defn next-generation
   "The following rules are applied in order
   to generate the next generation.
