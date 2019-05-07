@@ -1,5 +1,6 @@
 (ns conway.game.surface
-  (:require [conway.protocols.world :as p-world]))
+  (:require [conway.protocols.world :as p-world]
+            [conway.logic.cell :as logic.cell]))
 
 (def dead-color "rgb(40, 40, 40)")
 (def alive-color "rgb(33, 140, 235)")
@@ -10,11 +11,8 @@
 (defn- coordinate [index cell-size]
   (* index cell-size))
 
-(defn- alive? [cell]
-  (= cell 1))
-
 (defn- color [cell]
-  (if (alive? cell)
+  (if (logic.cell/alive? cell)
     alive-color
     dead-color))
 

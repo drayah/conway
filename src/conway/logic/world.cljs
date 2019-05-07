@@ -1,7 +1,9 @@
 (ns conway.logic.world
   (:require [conway.logic.cell :as logic.cell]))
 
-(def possible-cell-values #{0 1})
+(def possible-cell-values (-> logic.cell/state
+                              vals
+                              set))
 
 (defn- ones-and-zeros? [seed]
   (->> seed
@@ -102,10 +104,10 @@
   4. Any dead cell with exactly three live neighbors returns to life."
   [{:keys [cell neighbors]}]
   (cond
-    (logic.cell/under-population? neighbors) 0
+    (logic.cell/under-population? neighbors) (:dead logic.cell/state)
     (logic.cell/stay-alive? cell neighbors)  cell
-    (logic.cell/over-population? neighbors)  0
-    (logic.cell/revive? cell neighbors)      1
+    (logic.cell/over-population? neighbors)  (:dead logic.cell/state)
+    (logic.cell/revive? cell neighbors)      (:alive logic.cell/state)
     :else                                    cell))
 
 (defn next-generation
