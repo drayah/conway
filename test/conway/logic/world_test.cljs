@@ -139,4 +139,18 @@
                              {:cell :a :x 0 :y 0}
                              {:cell :g :x 0 :y 2}
                              {:cell :c :x 2 :y 0}
-                             {:cell :i :x 2 :y 2}]}))))
+                             {:cell :i :x 2 :y 2}]}))
+
+    (is (match? (->> (l-world/generation->neighbors 3 [:a :b :c
+                                                       :d :e :f
+                                                       :g :h :i])
+                     (cell-by-coords {:x 0 :y 0}))
+                {:cell      :a :x 0 :y 0
+                 :neighbors [{:cell :g :x 0 :y 2}
+                             {:cell :d :x 0 :y 1}
+                             {:cell :c :x 2 :y 0}
+                             {:cell :b :x 1 :y 0}
+                             {:cell :i :x 2 :y 2}
+                             {:cell :f :x 2 :y 1}
+                             {:cell :h :x 1 :y 2}
+                             {:cell :e :x 1 :y 1}]}))))
