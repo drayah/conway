@@ -1,4 +1,5 @@
-(ns conway.logic.world)
+(ns conway.logic.world
+  (:require [conway.logic.cell :as logic.cell]))
 
 (def possible-cell-values #{0 1})
 
@@ -91,7 +92,7 @@
   (->> (generation->cell+coordinates size generation)
        (map #(cell+coordinates->cell+coordinates+neighbors % size generation))))
 
-(defn next-generation
+(defn rules
   "The following rules are applied in order
   to generate the next generation.
 
@@ -99,4 +100,14 @@
   2. Any cell with two or three live neighbors lives on.
   3. Any cell with more than three live neighbors dies.
   4. Any dead cell with exactly three live neighbors returns to life."
-  [size generation])
+  [{:keys [cell neighbors]}]
+  (cond
+    (logic.cell/under-population? neighbors) 0
+    (logic.cell/stay-alive? cell neighbors)  cell
+    (logic.cell/over-population? neighbors)  0
+    (logic.cell/revive? cell neighbors)      1
+    :else                                    cell))
+
+(defn next-generation
+  [size generation]
+  (->> (generation->neighbors size generation)))
