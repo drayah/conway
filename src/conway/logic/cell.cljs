@@ -24,4 +24,4 @@
   [cell neighbors])
 
 (defn revive?
-  [cell neighbors])
+  [neighbors])

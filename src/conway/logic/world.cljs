@@ -107,7 +107,7 @@
     (logic.cell/under-population? neighbors) (:dead logic.cell/state)
     (logic.cell/stay-alive? cell neighbors)  cell
     (logic.cell/over-population? neighbors)  (:dead logic.cell/state)
-    (logic.cell/revive? cell neighbors)      (:alive logic.cell/state)
+    (logic.cell/revive? neighbors)           (:alive logic.cell/state)
     :else                                    cell))
 
 (defn next-generation
