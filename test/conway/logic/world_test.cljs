@@ -94,18 +94,13 @@
   (-> (filter #(equal-coords? % x y) cells+neighbors)
       first))
 
-(def mock-generation {:size       3
-                      :generation [:a :b :c
-                                   :d :e :f
-                                   :g :h :i]})
-
 (deftest generation->neighbors
   (testing "returns correct number of elements"
-    (let [size       (:size mock-generation)
-          generation (:generation mock-generation)]
-      (is (= (-> (logic.world/generation->neighbors size generation)
-                 count)
-             (count generation)))))
+    (is (= (-> (logic.world/generation->neighbors 3 [:a :b :c
+                                                     :d :e :f
+                                                     :g :h :i])
+               count)
+           9)))
 
   (testing "returns correct neighbors and cell values"
     (is (match? (->> (logic.world/generation->neighbors 3 [:a :b :c
@@ -138,4 +133,11 @@
                                                 0 1 0])
                 [0 0 0
                  1 1 1
-                 0 0 0]))))
+                 0 0 0]))
+
+    (is (match? (logic.world/next-generation 3 [0 0 0
+                                                1 1 1
+                                                0 0 0])
+                [0 1 0
+                 0 1 0
+                 0 1 0]))))
