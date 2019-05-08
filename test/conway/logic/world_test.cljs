@@ -4,8 +4,6 @@
             [matcher-combinators.test]
             [conway.logic.helpers :refer [coords]]))
 
-(def neighbor-count 8)
-
 (deftest valid-seed?
   (are [params result] (= (logic.world/valid-seed? params) result)
     {:size 0 :seed []}                  true
@@ -42,39 +40,34 @@
 
 (deftest coordinates->vertical-neighbors
   (are [coordinates size result] (= (logic.world/coordinates->vertical-neighbors coordinates size) result)
-    {:x 0 :y 0} 3 [{:x 0 :y 2} {:x 0 :y 1}]
-    {:x 1 :y 0} 3 [{:x 1 :y 2} {:x 1 :y 1}]
-    {:x 2 :y 0} 3 [{:x 2 :y 2} {:x 2 :y 1}]
+    {:x 0 :y 0} 3 [{:x 0 :y 1}]
+    {:x 1 :y 0} 3 [{:x 1 :y 1}]
+    {:x 2 :y 0} 3 [{:x 2 :y 1}]
     {:x 0 :y 1} 3 [{:x 0 :y 0} {:x 0 :y 2}]
     {:x 1 :y 1} 3 [{:x 1 :y 0} {:x 1 :y 2}]
     {:x 2 :y 1} 3 [{:x 2 :y 0} {:x 2 :y 2}]
-    {:x 0 :y 2} 3 [{:x 0 :y 1} {:x 0 :y 0}]
-    {:x 1 :y 2} 3 [{:x 1 :y 1} {:x 1 :y 0}]
-    {:x 2 :y 2} 3 [{:x 2 :y 1} {:x 2 :y 0}]))
+    {:x 0 :y 2} 3 [{:x 0 :y 1}]
+    {:x 1 :y 2} 3 [{:x 1 :y 1}]
+    {:x 2 :y 2} 3 [{:x 2 :y 1}]))
 
 (deftest coordinates->horizontal-neighbors
   (are [coordinates size result] (= (logic.world/coordinates->horizontal-neighbors coordinates size) result)
-    {:x 0 :y 0} 3 [{:x 2 :y 0} {:x 1 :y 0}]
+    {:x 0 :y 0} 3 [{:x 1 :y 0}]
     {:x 1 :y 0} 3 [{:x 0 :y 0} {:x 2 :y 0}]
-    {:x 2 :y 0} 3 [{:x 1 :y 0} {:x 0 :y 0}]
-    {:x 0 :y 1} 3 [{:x 2 :y 1} {:x 1 :y 1}]
+    {:x 2 :y 0} 3 [{:x 1 :y 0}]
+    {:x 0 :y 1} 3 [{:x 1 :y 1}]
     {:x 1 :y 1} 3 [{:x 0 :y 1} {:x 2 :y 1}]
-    {:x 2 :y 1} 3 [{:x 1 :y 1} {:x 0 :y 1}]
-    {:x 0 :y 2} 3 [{:x 2 :y 2} {:x 1 :y 2}]
+    {:x 2 :y 1} 3 [{:x 1 :y 1}]
+    {:x 0 :y 2} 3 [{:x 1 :y 2}]
     {:x 1 :y 2} 3 [{:x 0 :y 2} {:x 2 :y 2}]
-    {:x 2 :y 2} 3 [{:x 1 :y 2} {:x 0 :y 2}]))
+    {:x 2 :y 2} 3 [{:x 1 :y 2}]))
 
 (deftest coordinates->diagonal-neighbors
   (are [coordinates size result] (= (logic.world/coordinates->diagonal-neighbors coordinates size) result)
-    {:x 0 :y 0} 3 [{:x 2 :y 2} {:x 2 :y 1} {:x 1 :y 2} {:x 1 :y 1}]
+    {:x 0 :y 0} 3 [{:x 1 :y 1}]
     {:x 1 :y 1} 3 [{:x 0 :y 0} {:x 0 :y 2} {:x 2 :y 0} {:x 2 :y 2}]))
 
 (deftest coordinates->neighbors
-  (testing "returns correct neighbor count"
-    (is (= (-> (logic.world/coordinates->neighbors {:x 0 :y 0} 3)
-               count)
-           neighbor-count)))
-
   (testing "returns all coordinate neighbors"
     (are [coordinates size result] (= (logic.world/coordinates->neighbors coordinates size) result)
       {:x 1 :y 1} 3 [{:x 1 :y 0}
@@ -86,13 +79,8 @@
                      {:x 2 :y 0}
                      {:x 2 :y 2}]
 
-      {:x 0 :y 0} 3 [{:x 0 :y 2}
-                     {:x 0 :y 1}
-                     {:x 2 :y 0}
+      {:x 0 :y 0} 3 [{:x 0 :y 1}
                      {:x 1 :y 0}
-                     {:x 2 :y 2}
-                     {:x 2 :y 1}
-                     {:x 1 :y 2}
                      {:x 1 :y 1}])))
 
 (defn- equal-coords?
@@ -139,11 +127,15 @@
                                                            :g :h :i])
                      (cell-by-coords {:x 0 :y 0}))
                 {:cell      :a :x 0 :y 0
-                 :neighbors [{:cell :g :x 0 :y 2}
-                             {:cell :d :x 0 :y 1}
-                             {:cell :c :x 2 :y 0}
+                 :neighbors [{:cell :d :x 0 :y 1}
                              {:cell :b :x 1 :y 0}
-                             {:cell :i :x 2 :y 2}
-                             {:cell :f :x 2 :y 1}
-                             {:cell :h :x 1 :y 2}
                              {:cell :e :x 1 :y 1}]}))))
+
+(deftest next-generation
+  (testing "calculates correct next generation"
+    (is (match? (logic.world/next-generation 3 [0 1 0
+                                                0 1 0
+                                                0 1 0])
+                [0 0 0
+                 1 1 1
+                 0 0 0]))))

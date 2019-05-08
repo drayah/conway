@@ -32,36 +32,40 @@
   [size generation]
   (map-indexed (partial cell->coordinate size) generation))
 
-(defn- no-invalid-coordinates
-  [size
-   {:keys [x y] :as coordinate}]
+(defn- invalid-coordinate?
+  [min max {:keys [x y]}]
+  (or
+   (< x min)
+   (> x max)
+   (< y min)
+   (> y max)))
+
+(defn- remove-invalid-coords
+  [size coordinates]
   (let [min 0
         max (dec size)]
-    (cond-> coordinate
-      (< x min) (assoc :x max)
-      (> x max) (assoc :x min)
-      (< y min) (assoc :y max)
-      (> y max) (assoc :y min))))
+    (->> coordinates
+         (remove (partial invalid-coordinate? min max)))))
 
 (defn coordinates->vertical-neighbors
   [{:keys [x y]}
    size]
-  (map (partial no-invalid-coordinates size) [{:x x :y (dec y)}
-                                              {:x x :y (inc y)}]))
+  (remove-invalid-coords size [{:x x :y (dec y)}
+                               {:x x :y (inc y)}]))
 
 (defn coordinates->horizontal-neighbors
   [{:keys [x y]}
    size]
-  (map (partial no-invalid-coordinates size) [{:x (dec x) :y y}
-                                              {:x (inc x) :y y}]))
+  (remove-invalid-coords size [{:x (dec x) :y y}
+                               {:x (inc x) :y y}]))
 
 (defn coordinates->diagonal-neighbors
   [{:keys [x y]}
    size]
-  (map (partial no-invalid-coordinates size) [{:x (dec x) :y (dec y)}
-                                              {:x (dec x) :y (inc y)}
-                                              {:x (inc x) :y (dec y)}
-                                              {:x (inc x) :y (inc y)}]))
+  (remove-invalid-coords size [{:x (dec x) :y (dec y)}
+                               {:x (dec x) :y (inc y)}
+                               {:x (inc x) :y (dec y)}
+                               {:x (inc x) :y (inc y)}]))
 
 (defn coordinates->neighbors
   [{:keys [x y] :as coordinate}
