@@ -6,9 +6,10 @@
 (def neighbor-count {:minimum 2
                      :maximum 3})
 
-(defn- alive? [cell]
+(defn alive? [cell]
   (= cell (:alive state)))
 
+(def dead? (complement alive?))
 (def filter-alive (partial filter (comp alive? :cell)))
 
 (defn- count-alive
@@ -30,16 +31,20 @@
       (> (:maximum neighbor-count))))
 
 (defn stay-alive?
-  [neighbors]
+  [cell neighbors]
   (let [threshold-low       (-> (:minimum neighbor-count) dec)
         threshold-high      (-> (:maximum neighbor-count) inc)
         live-neighbor-count (count-alive neighbors)]
-    (< threshold-low
-       live-neighbor-count
-       threshold-high)))
+    (and
+     (alive? cell)
+     (< threshold-low
+        live-neighbor-count
+        threshold-high))))
 
 (defn revive?
-  [neighbors]
-  (-> neighbors
-      count-alive
-      (= (:maximum neighbor-count))))
+  [cell neighbors]
+  (and
+   (dead? cell)
+   (-> neighbors
+       count-alive
+       (= (:maximum neighbor-count)))))

@@ -28,25 +28,33 @@
     (coords [1 0 0] [1 0 1] [1 1 0] [1 1 1]) true))
 
 (deftest revive?
-  (are [neighbors result] (= (logic.cell/revive? neighbors) result)
-    (coords)                                 false
-    (coords [0 0 0])                         false
-    (coords [1 0 0])                         false
-    (coords [0 0 0] [0 1 0] [0 1 1])         false
-    (coords [0 0 0] [1 1 0] [1 1 1])         false
-    (coords [1 0 0] [1 1 0] [1 1 1])         true
-    (coords [1 0 0] [1 1 0] [0 0 1] [1 1 1]) true
-    (coords [1 0 0] [0 1 0] [1 0 1] [1 1 1]) true
-    (coords [1 0 0] [1 1 0] [1 0 1] [1 1 1]) false))
+  (are [cell neighbors result] (= (logic.cell/revive? cell neighbors) result)
+    0 (coords)                                 false
+    0 (coords [0 0 0])                         false
+    0 (coords [1 0 0])                         false
+    0 (coords [0 0 0] [0 1 0] [0 1 1])         false
+    0 (coords [0 0 0] [1 1 0] [1 1 1])         false
+    0 (coords [1 0 0] [1 1 0] [1 1 1])         true
+    0 (coords [1 0 0] [1 1 0] [0 0 1] [1 1 1]) true
+    0 (coords [1 0 0] [0 1 0] [1 0 1] [1 1 1]) true
+    1 (coords [1 0 0] [1 1 0] [1 1 1])         false
+    1 (coords [1 0 0] [1 1 0] [0 0 1] [1 1 1]) false
+    1 (coords [1 0 0] [0 1 0] [1 0 1] [1 1 1]) false
+    0 (coords [1 0 0] [1 1 0] [1 0 1] [1 1 1]) false))
 
 (deftest stay-alive?
-  (are [neighbors result] (= (logic.cell/stay-alive? neighbors) result)
-    (coords)                                 false
-    (coords [0 0 0])                         false
-    (coords [1 0 0])                         false
-    (coords [1 0 0] [1 0 1])                 true
-    (coords [1 0 0] [1 0 1] [0 1 1])         true
-    (coords [1 0 0] [0 0 1] [1 1 1])         true
-    (coords [1 0 0] [1 0 1] [1 1 1])         true
-    (coords [1 0 0] [1 0 1] [0 1 0] [1 1 1]) true
-    (coords [1 0 0] [1 0 1] [1 1 0] [1 1 1]) false))
+  (are [cell neighbors result] (= (logic.cell/stay-alive? cell neighbors) result)
+    1 (coords)                                 false
+    1 (coords [0 0 0])                         false
+    1 (coords [1 0 0])                         false
+    1 (coords [1 0 0] [1 0 1])                 true
+    1 (coords [1 0 0] [1 0 1] [0 1 1])         true
+    1 (coords [1 0 0] [0 0 1] [1 1 1])         true
+    1 (coords [1 0 0] [1 0 1] [1 1 1])         true
+    1 (coords [1 0 0] [1 0 1] [0 1 0] [1 1 1]) true
+    0 (coords [1 0 0] [1 0 1])                 false
+    0 (coords [1 0 0] [1 0 1] [0 1 1])         false
+    0 (coords [1 0 0] [0 0 1] [1 1 1])         false
+    0 (coords [1 0 0] [1 0 1] [1 1 1])         false
+    0 (coords [1 0 0] [1 0 1] [0 1 0] [1 1 1]) false
+    1 (coords [1 0 0] [1 0 1] [1 1 0] [1 1 1]) false))
