@@ -30,7 +30,7 @@
       (> (:maximum neighbor-count))))
 
 (defn stay-alive?
-  [cell neighbors])
+  [neighbors])
 
 (defn revive?
   [neighbors]
