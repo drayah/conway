@@ -1,7 +1,8 @@
 (ns conway.logic.world-test
   (:require [conway.logic.world :as logic.world]
             [cljs.test :refer-macros [deftest testing is are]]
-            [matcher-combinators.test]))
+            [matcher-combinators.test]
+            [conway.logic.helpers :refer [coords]]))
 
 (def neighbor-count 8)
 
@@ -22,14 +23,6 @@
     {:size 2 :seed [0 9 0 0]}           false
     {:size 2 :seed [1 2 3 4]}           false
     {:size 3 :seed [0 0 0 0 0 0 0 0 0]} true))
-
-(defn- ->coordinate [[cell x y]]
-  {:cell cell
-   :x    x
-   :y    y})
-
-(defn- coords [& params]
-  (map ->coordinate params))
 
 (deftest generation->cell+coordinates
   (are [generation size result] (= (logic.world/generation->cell+coordinates size generation) result)

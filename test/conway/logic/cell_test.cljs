@@ -1,14 +1,7 @@
 (ns conway.logic.cell-test
   (:require [conway.logic.cell :as logic.cell]
-            [cljs.test :refer-macros [deftest testing is are]]))
-
-(defn- ->coordinate [[cell x y]]
-  {:cell cell
-   :x    x
-   :y    y})
-
-(defn- coords [& params]
-  (map ->coordinate params))
+            [cljs.test :refer-macros [deftest testing is are]]
+            [conway.logic.helpers :refer [coords]]))
 
 (deftest under-population?
   (are [neighbors result] (= (logic.cell/under-population? neighbors) result)
