@@ -112,4 +112,5 @@
 
 (defn next-generation
   [size generation]
-  (->> (generation->neighbors size generation)))
+  (->> (generation->neighbors size generation)
+       (map rules)))

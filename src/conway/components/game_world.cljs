@@ -2,7 +2,8 @@
   (:require [com.stuartsierra.component :as component]
             [conway.protocols.world :as p-world]
             [conway.validations.world :refer [valid? explain seed?]]
-            [conway.js.common :refer [log!]]))
+            [conway.js.common :refer [log!]]
+            [conway.logic.world :as logic.world]))
 
 (defn- initialize-game-world!
   [{:keys [size seed] :as params}
@@ -22,7 +23,9 @@
                   "World initialization failed!"
                   {:error (explain seed? params)})))))
 
-  (tick! [_]) ;calculate new generation
+  (tick! [_]
+    (let [next-generation (logic.world/next-generation (:size @state) (:generation @state))]
+      (swap! state #(assoc % :generation next-generation))))
 
   (size [_] (:size @state))
 
