@@ -30,7 +30,13 @@
       (> (:maximum neighbor-count))))
 
 (defn stay-alive?
-  [neighbors])
+  [neighbors]
+  (let [threshold-low       (-> (:minimum neighbor-count) dec)
+        threshold-high      (-> (:maximum neighbor-count) inc)
+        live-neighbor-count (count-alive neighbors)]
+    (< threshold-low
+       live-neighbor-count
+       threshold-high)))
 
 (defn revive?
   [neighbors]

@@ -38,3 +38,15 @@
     (coords [1 0 0] [1 1 0] [0 0 1] [1 1 1]) true
     (coords [1 0 0] [0 1 0] [1 0 1] [1 1 1]) true
     (coords [1 0 0] [1 1 0] [1 0 1] [1 1 1]) false))
+
+(deftest stay-alive?
+  (are [neighbors result] (= (logic.cell/stay-alive? neighbors) result)
+    (coords)                                 false
+    (coords [0 0 0])                         false
+    (coords [1 0 0])                         false
+    (coords [1 0 0] [1 0 1])                 true
+    (coords [1 0 0] [1 0 1] [0 1 1])         true
+    (coords [1 0 0] [0 0 1] [1 1 1])         true
+    (coords [1 0 0] [1 0 1] [1 1 1])         true
+    (coords [1 0 0] [1 0 1] [0 1 0] [1 1 1]) true
+    (coords [1 0 0] [1 0 1] [1 1 0] [1 1 1]) false))
