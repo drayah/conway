@@ -15,3 +15,14 @@
     (coords [0 0 0] [1 0 1] [0 0 0]) true
     (coords [1 0 0] [1 0 1] [1 0 0]) false
     (coords [0 0 0] [0 0 1] [0 0 0]) true))
+
+(deftest over-population?
+  (are [neighbors result] (= (logic.cell/over-population? neighbors) result)
+    (coords)                                 false
+    (coords [0 0 0])                         false
+    (coords [0 0 0] [0 0 1])                 false
+    (coords [1 0 0] [1 0 1] [1 1 1])         false
+    (coords [0 0 0] [0 0 1] [0 1 0] [0 1 1]) false
+    (coords [1 0 0] [1 0 1] [0 1 0] [0 1 1]) false
+    (coords [1 0 0] [1 0 1] [0 1 0] [1 1 1]) false
+    (coords [1 0 0] [1 0 1] [1 1 0] [1 1 1]) true))

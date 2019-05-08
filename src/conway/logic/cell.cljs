@@ -14,7 +14,11 @@
        (> 2)))
 
 (defn over-population?
-  [neighbors])
+  [neighbors]
+  (->> neighbors
+       (filter (comp alive? :cell))
+       count
+       (< 3)))
 
 (defn stay-alive?
   [cell neighbors])
