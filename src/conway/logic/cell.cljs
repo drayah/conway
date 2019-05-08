@@ -6,17 +6,19 @@
 (defn- alive? [cell]
   (= cell (:alive state)))
 
+(def filter-alive (partial filter (comp alive? :cell)))
+
 (defn under-population?
   [neighbors]
   (->> neighbors
-       (filter (comp alive? :cell))
+       filter-alive
        count
        (> 2)))
 
 (defn over-population?
   [neighbors]
   (->> neighbors
-       (filter (comp alive? :cell))
+       filter-alive
        count
        (< 3)))
 
@@ -24,4 +26,5 @@
   [cell neighbors])
 
 (defn revive?
-  [neighbors])
+  [neighbors]
+  (->> neighbors))
