@@ -7,7 +7,7 @@
 (defn- animate! [world canvas timestamp]
   (let [animate-fn (partial animate! world canvas)]
     (jsc/request-animation-frame! animate-fn)
-    (log! (str "LOOP - " timestamp))
+    ;(log! (str "LOOP - " timestamp))
     (g-surface/render! world (:render-context canvas))
     (p-world/tick! world)))
 

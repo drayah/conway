@@ -5,9 +5,11 @@
             [conway.components.canvas :as c-canvas]
             [conway.components.simulation :as c-simulation]
             [conway.game.seeds :as seeds]
+            [conway.logic.seed :as logic.seed]
             [conway.js.common :as jsc :refer [log!]]))
 
-(def simple-config seeds/simple-configuration)
+(def simple-config (-> seeds/simple-configuration
+                       (logic.seed/resize 15)))
 
 (def system (component/system-map
              :world (c-game-world/new-world (:size simple-config) (:seed simple-config))
